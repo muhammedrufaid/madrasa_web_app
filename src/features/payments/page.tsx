@@ -1,6 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
-export function Home() {
+export function Payments() {
   return (
     <div className="w-full p-4">
       <SidebarTrigger />
@@ -13,4 +13,4 @@ export function Home() {
   )
 }
 
-export default Home
+export default Payments

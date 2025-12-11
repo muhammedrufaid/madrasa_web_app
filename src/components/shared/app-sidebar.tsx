@@ -1,6 +1,5 @@
 import { Calendar, Home, Search, Settings, Users, Users2, Users2Icon, ChevronDown } from "lucide-react"
 import { NavLink } from "react-router-dom"
-import { useState } from "react"
 import {
   Sidebar,
   SidebarContent,
@@ -39,7 +38,7 @@ const items = [
     title: "Students",
     url: "/students",
     icon: Users2,
-    list:[
+    list: [
       { name: "Manage Students", url: "/students" },
       { name: "Add Student", url: "/students/add-students" },
       { name: "Bulk Upload", url: "/students/students-bulk-upload" },
@@ -62,16 +61,18 @@ const items = [
   },
 ]
 
-export function AppSidebar() {
-  const [expandedItems, setExpandedItems] = useState<string[]>([])
+import React, { useState } from "react";
 
-  const toggleExpand = (title: string) => {
+export function AppSidebar() {
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const handleExpand = (title: string) => {
     setExpandedItems((prev) =>
       prev.includes(title)
-        ? prev.filter((item) => item !== title)
+        ? prev.filter((t) => t !== title)
         : [...prev, title]
-    )
-  }
+    );
+  };
 
   return (
     <Sidebar>
@@ -88,46 +89,34 @@ export function AppSidebar() {
                   <SidebarMenuItem>
                     <div className="flex items-center">
                       <SidebarMenuButton asChild className="flex-1">
-                        {item.list ? (
-                          <div
-                            className={`flex items-center gap-2 rounded-md p-[20px_10px]! transition-colors text-[18px] cursor-pointer ${"text-gray-700 hover:bg-[#fd5d5d]! hover:text-white!"}`}
-                          >
-                            <item.icon className="w-10 h-10 shrink-0" />
-                            <span>{item.title}</span>
-                          </div>
-                        ) : (
-                          <NavLink
-                            to={item.url}
-                            end={item.url === "/"}
-                            className={({ isActive }) =>
-                              `flex items-center gap-2 rounded-md p-[20px_10px]! transition-colors text-[18px] ${
-                                isActive
-                                  ? "bg-[#fd5d5d] text-white"
-                                  : "text-gray-700 hover:bg-[#fd5d5d]! hover:text-white!"
-                              }`
-                            }
-                          >
-                            <item.icon className="w-10 h-10 shrink-0" />
-                            <span>{item.title}</span>
-                          </NavLink>
-                        )}
-                      </SidebarMenuButton>
+                        <NavLink
+                          to={item.url}
+                          end={item.url === "/"}
+                          className={({ isActive }) =>
+                            `flex items-center gap-2 rounded-md p-[20px_10px]! transition-colors text-[16px] ${isActive
+                              ? "bg-[#fd5d5d] text-white"
+                              : "text-gray-700"
+                            }`
+                          }
 
-                      {item.list && (
-                        <button
-                          onClick={() => toggleExpand(item.title)}
-                          className="ml-2 p-2 hover:bg-gray-200 rounded transition-colors"
-                          aria-label="Toggle submenu"
                         >
-                          <ChevronDown
-                            className={`w-5 h-5 transition-transform ${
-                              expandedItems.includes(item.title)
+                          <item.icon className="w-10 h-10 shrink-0" />
+                          <span>{item.title}</span>
+                          {item.list ? (
+                            <ChevronDown
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleExpand(item.title);
+                              }}
+                              className={`w-5 h-5 ms-auto transition-transform ${expandedItems.includes(item.title)
                                 ? "rotate-180"
                                 : ""
-                            }`}
-                          />
-                        </button>
-                      )}
+                                }`}
+
+                            />
+                          ) : null}
+                        </NavLink>
+                      </SidebarMenuButton>
                     </div>
                   </SidebarMenuItem>
 
@@ -137,12 +126,10 @@ export function AppSidebar() {
                         <NavLink
                           key={sub.name}
                           to={sub.url}
-                          end
                           className={({ isActive }) =>
-                            `block px-3 py-2 rounded-md text-sm transition-colors ${
-                              isActive
-                                ? "bg-[#fd5d5d] text-white"
-                                : "text-gray-600 hover:bg-[#fd5d5d] hover:text-white"
+                            `block px-3 py-2 rounded-md text-sm transition-colors ${isActive
+                              ? "bg-[#fd5d5d] text-white"
+                              : "text-gray-600 hover:bg-[#fd5d5d] hover:text-white"
                             }`
                           }
                         >

@@ -1,9 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/shared/app-sidebar"
 
-import Home from "@/pages/Home" 
-import Attendance from "./pages/Attendance"
+import Dashboard from "@/features/dashboard/page"  
+import Attendance from "@/features/attendance/page"
+import Payments from "./features/payments/page"
+import Staffs from "./features/staff/page"
+import Students from "./features/students/page"
+import Teachers from "./features/teachers/page"
+import ClassRooms from "./features/classrooms/page"
 
 function App() {
   return (
@@ -18,8 +23,13 @@ function App() {
           </nav> */}
 
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/attendance" element={<Attendance />} />
+            <Route path="/payments-and-fees" element={<Payments />} />
+            <Route path="/staffs" element={<Staffs />} />
+            <Route path="/class-rooms" element={<ClassRooms />} />
+            <Route path="/students" element={<Students />} />
+            <Route path="/teachers" element={<Teachers />} />
           </Routes>
         </main>
       </SidebarProvider>
