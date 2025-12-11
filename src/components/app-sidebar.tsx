@@ -1,4 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Calendar, Home, Search, Settings, Users, Users2, Users2Icon } from "lucide-react"
+import { NavLink } from "react-router-dom"
 import {
   Sidebar,
   SidebarContent,
@@ -8,33 +9,49 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 // Menu items
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Dashboard",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
+    title: "Attendance",
+    url: "/attendance",
     icon: Search,
   },
   {
+    title: "ClassRooms",
+    url: "/classrooms",
+    icon: Calendar,
+  },
+  {
+    title: "Accounts and Fees",
+    url: "/accounts-and-fees",
+    icon: Calendar,
+  },
+  {
+    title: "Students",
+    url: "/students",
+    icon: Users2,
+  },
+  {
+    title: "Teachers",
+    url: "/teachers",
+    icon: Users,
+  },
+  {
+    title: "Staffs",
+    url: "/staffs",
+    icon: Users2Icon,
+  },
+  {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ]
@@ -44,16 +61,29 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
+          <SidebarGroupLabel>Madrass Management</SidebarGroupLabel>
+          <div>
+            <SidebarTrigger />
+          </div>
+          <SidebarGroupContent className="p-3">
+            <SidebarMenu className=" flex flex-col gap-2">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <NavLink
+                      to={item.url}
+                      end={item.url === "/"}
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 rounded-md p-[20px_10px]! transition-colors text-[18px] ${
+                          isActive
+                            ? "bg-[#fd5d5d] text-white"
+                            : "text-gray-700 hover:bg-[#fd5d5d]! hover:text-white!"
+                        }`
+                      }
+                    >
+                      <item.icon className="w-10 h-10 shrink-0" />
                       <span>{item.title}</span>
-                    </a>
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
