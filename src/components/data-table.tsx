@@ -141,9 +141,9 @@ export function DataTable<TData, TValue>({
                   ))}
                 
                 {/* Actions Header - Always visible */}
-                <TableHead className="w-12">
+                {/* <TableHead className="w-12">
                   Actions
-                </TableHead>
+                </TableHead> */}
               </TableRow>
             ))}
           </TableHeader>
@@ -192,8 +192,8 @@ export function DataTable<TData, TValue>({
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>View details</DropdownMenuItem>
                         <DropdownMenuItem>Edit teacher</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600 hover:text-red-700">
-                          Remove teacher
+                        <DropdownMenuItem className="text-red-600 hover:text-white! hover:bg-[#fd5d5d]!">
+                          Remove teacher1
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
