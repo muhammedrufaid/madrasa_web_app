@@ -191,10 +191,10 @@ export function TeacherForm({ mode, teacherId }: TeacherFormProps) {
                 onValueChange={(value) => form.setValue('department_id', value)}
                 value={form.watch('department_id')}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select department" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="w-full">
                   {mockDepartments.map((dept) => (
                     <SelectItem key={dept.id} value={dept.id}>
                       {dept.name}
