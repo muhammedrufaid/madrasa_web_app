@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Table,
@@ -33,15 +34,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  filterColumn = "email", // default filter on email
-}: {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filterColumn?: string;
-}) {
+  onRemove?: (id: string) => Promise<void> | void;
+}
+
+export function DataTable<TData extends { id: string }, TValue>({
+  columns,
+  data,
+  filterColumn = "email", // default filter on email
+  onRemove,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -49,6 +54,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const navigate = useNavigate();
 
   const table = useReactTable({
     data,
@@ -190,9 +196,31 @@ export function DataTable<TData, TValue>({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit teacher</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600 hover:text-white! hover:bg-[#fd5d5d]!">
+                        <DropdownMenuItem 
+                          onClick={() => navigate(`/teachers/view-teachers/${row.original.id}`)}
+                        >
+                          View details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => navigate(`/teachers/edit-teachers/${row.original.id}`)}
+                        >
+                          Edit teacher
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-red-600 hover:text-white! hover:bg-[#fd5d5d]!"
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            if (window.confirm('Are you sure you want to remove this teacher?')) {
+                              try {
+                                if (onRemove) {
+                                  await onRemove(row.original.id);
+                                }
+                              } catch (error) {
+                                console.error('Error removing teacher:', error);
+                              }
+                            }
+                          }}
+                        >
                           Remove teacher
                         </DropdownMenuItem>
                       </DropdownMenuContent>
