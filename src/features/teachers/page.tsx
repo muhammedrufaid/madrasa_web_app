@@ -13,10 +13,10 @@ export function Teachers() {
 
       {/* create a datatable for teachers */}
       <div className="pt-4">
-        <DataTable
+       <DataTable
           columns={columns}
           data={teachersData}
-          filterColumn="email"
+          filterColumn="name"
           entityType="teacher"
           onRemove={async (id) => {
             // TODO: Replace with your actual API call
@@ -33,3 +33,4 @@ export function Teachers() {
 }
 
 export default Teachers;
+ 

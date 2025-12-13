@@ -38,15 +38,15 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filterColumn?: string;
-  entityType?: 'teacher' | 'student' | 'staff';
+  entityType?: "teacher" | "student" | "staff";
   onRemove?: (id: string) => Promise<void> | void;
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
-  filterColumn = "email",
-  entityType = 'teacher', // default to 'teacher' for backward compatibility
+  filterColumn = "name",
+  entityType = "teacher", // default to 'teacher' for backward compatibility
   onRemove,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -135,10 +135,15 @@ export function DataTable<TData extends { id: string }, TValue>({
                     />
                   </div>
                 </TableHead>
-                
+
                 {/* Dynamic Headers */}
                 {headerGroup.headers
-                  .filter(header => header.id !== 'select' && header.id !== 'actions' && header.column.getIsVisible())
+                  .filter(
+                    (header) =>
+                      header.id !== "select" &&
+                      header.id !== "actions" &&
+                      header.column.getIsVisible()
+                  )
                   .map((header) => (
                     <TableHead key={header.id}>
                       {flexRender(
@@ -147,7 +152,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                       )}
                     </TableHead>
                   ))}
-                
+
                 {/* Actions Header - Always visible */}
                 {/* <TableHead className="w-12">
                   Actions
@@ -159,7 +164,10 @@ export function DataTable<TData extends { id: string }, TValue>({
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
                   {/* Select Checkbox */}
                   <TableCell>
                     <div className="flex items-center">
@@ -171,13 +179,15 @@ export function DataTable<TData extends { id: string }, TValue>({
                       />
                     </div>
                   </TableCell>
-                  
+
                   {/* Dynamic Cells - Only show visible columns */}
-                  {row.getVisibleCells()
-                    .filter(cell => 
-                      cell.column.id !== 'select' && 
-                      cell.column.id !== 'actions' && 
-                      cell.column.getIsVisible()
+                  {row
+                    .getVisibleCells()
+                    .filter(
+                      (cell) =>
+                        cell.column.id !== "select" &&
+                        cell.column.id !== "actions" &&
+                        cell.column.getIsVisible()
                     )
                     .map((cell) => (
                       <TableCell key={cell.id}>
@@ -187,7 +197,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                         )}
                       </TableCell>
                     ))}
-                  
+
                   {/* Actions Cell - Always visible */}
                   <TableCell className="text-right">
                     <DropdownMenu>
@@ -198,27 +208,39 @@ export function DataTable<TData extends { id: string }, TValue>({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem 
-                          onClick={() => navigate(`/${entityType}s/view-${entityType}s/${row.original.id}`)}
+                        <DropdownMenuItem
+                          onClick={() =>
+                            navigate(
+                              `/${entityType}s/view-${entityType}s/${row.original.id}`
+                            )
+                          }
                         >
                           View details
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => navigate(`/${entityType}s/edit-${entityType}s/${row.original.id}`)}
+                          onClick={() =>
+                            navigate(
+                              `/${entityType}s/edit-${entityType}s/${row.original.id}`
+                            )
+                          }
                         >
                           Edit {entityType}
                         </DropdownMenuItem>
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                           className="text-red-600 hover:text-white! hover:bg-[#151529]!"
                           onClick={async (e) => {
                             e.stopPropagation();
-                            if (window.confirm(`Are you sure you want to remove this ${entityType}?`)) {
+                            if (
+                              window.confirm(
+                                `Are you sure you want to remove this ${entityType}?`
+                              )
+                            ) {
                               try {
                                 if (onRemove) {
                                   await onRemove(row.original.id);
                                 }
                               } catch (error) {
-                                console.error('Error removing teacher:', error);
+                                console.error("Error removing teacher:", error);
                               }
                             }
                           }}

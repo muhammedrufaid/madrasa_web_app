@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast"
 // Define types
 type Teacher = {
   id?: string;
-  user_id: string;
+  name: string;
   department_id: string;
   qualification: string;
   joining_date: string;
@@ -27,21 +27,27 @@ type TeacherFormProps = {
   teacherId?: string;
 };
 
-// Mock data for users and departments
-// const mockUsers = [
-//   { id: '1', name: 'John Doe', email: 'john@example.com' },
-//   { id: '2', name: 'Jane Smith', email: 'jane@example.com' },
-// ];
+// Import teacher data
+import { teachersData } from '@/lib/data';
 
-const mockDepartments = [
-  { id: '1', name: 'Computer Science' },
-  { id: '2', name: 'Mathematics' },
-  { id: '3', name: 'Science' },
-];
+// Departments mapping based on teacher data
+const departmentMap: Record<string, { id: string; name: string }> = {};
+
+// Extract unique departments from teachersData
+const uniqueDepartments = Array.from(new Set(teachersData.map(teacher => teacher.department)));
+const mockDepartments = uniqueDepartments.map((dept, index) => ({
+  id: String(index + 1),
+  name: dept
+}));
+
+// Create a map of department names to their IDs
+mockDepartments.forEach(dept => {
+  departmentMap[dept.name] = dept;
+});
 
 // Form validation schema
 const teacherFormSchema = z.object({
-  user_id: z.string().min(1, 'Please select a teacher'),
+  name: z.string().min(1, 'Please select a teacher'),
   department_id: z.string().min(1, 'Please select a department'),
   qualification: z.string().min(1, 'Qualification is required'),
   joining_date: z.string().min(1, 'Joining date is required'),
@@ -50,38 +56,49 @@ const teacherFormSchema = z.object({
 
 type TeacherFormValues = z.infer<typeof teacherFormSchema>;
 
-// Mock API functions
+// Fetch teacher by ID from teachersData
 const fetchTeacher = async (id: string): Promise<Teacher> => {
-  // In a real app, this would be an API call
   return new Promise((resolve) => {
     setTimeout(() => {
+      const teacher = teachersData.find(t => t.id === id);
+      if (!teacher) {
+        throw new Error('Teacher not found');
+      }
+      
+      // Map the teacher data to the form's expected format
+      const departmentId = Object.entries(departmentMap).find(
+        ([_, dept]) => dept.name === teacher.department
+      )?.[1]?.id || '';
+      
       resolve({
-        id,
-        user_id: '1',
-        department_id: '1',
-        qualification: 'PhD in Computer Science',
-        joining_date: '2023-01-01',
-        status: 'active',
+        id: teacher.id,
+        name: teacher.name,
+        department_id: departmentId,
+        qualification: teacher.qualification,
+        joining_date: teacher.joining_date,
+        status: teacher.status as 'active' | 'inactive'
       });
-    }, 500);
+    }, 0); // Remove artificial delay for local data
   });
 };
 
 const createTeacher = async (data: Teacher): Promise<Teacher> => {
-  // In a real app, this would be an API call
   return new Promise((resolve) => {
+    // In a real app, you would make an API call here
+    // For now, we'll just simulate a successful response
     setTimeout(() => {
       resolve({ ...data, id: Math.random().toString(36).substr(2, 9) });
-    }, 500);
+    }, 0);
   });
 };
 
 const updateTeacher = async (id: string, data: Teacher): Promise<Teacher> => {
-  // In a real app, this would be an API call
   return new Promise((resolve) => {
+    // In a real app, you would make an API call here
+    // For now, we'll just simulate a successful response
     setTimeout(() => {
       resolve({ ...data, id });
-    }, 500);
+    }, 0);
   });
 };
 
@@ -94,7 +111,7 @@ export function TeacherForm({ mode, teacherId }: TeacherFormProps) {
   const form = useForm<TeacherFormValues>({
     resolver: zodResolver(teacherFormSchema),
     defaultValues: {
-      user_id: '',
+      name: '',
       department_id: '',
       qualification: '',
       joining_date: '',
@@ -108,7 +125,7 @@ export function TeacherForm({ mode, teacherId }: TeacherFormProps) {
         try {
           const teacher = await fetchTeacher(teacherId);
           form.reset({
-            user_id: teacher.user_id,
+            name: teacher.name,
             department_id: teacher.department_id,
             qualification: teacher.qualification,
             joining_date: teacher.joining_date,
@@ -171,15 +188,15 @@ export function TeacherForm({ mode, teacherId }: TeacherFormProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-auto">
             {/* User Select */}
             <div className="space-y-2">
-              <Label htmlFor="user_id">Teacher</Label>
+              <Label htmlFor="name">Teacher</Label>
 
               <Input
                 id="qualification"
                 disabled={isViewMode || isLoading}
-                {...form.register('user_id')}
+                {...form.register('name')}
               />
-              {form.formState.errors.user_id && (
-                <p className="text-sm text-red-500">{form.formState.errors.user_id.message}</p>
+              {form.formState.errors.name && (
+                <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
               )}
             </div>
 
