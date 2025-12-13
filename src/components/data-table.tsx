@@ -207,7 +207,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                           Edit teacher
                         </DropdownMenuItem>
                         <DropdownMenuItem 
-                          className="text-red-600 hover:text-white! hover:bg-[#fd5d5d]!"
+                          className="text-red-600 hover:text-white! hover:bg-[#151529]!"
                           onClick={async (e) => {
                             e.stopPropagation();
                             if (window.confirm('Are you sure you want to remove this teacher?')) {
