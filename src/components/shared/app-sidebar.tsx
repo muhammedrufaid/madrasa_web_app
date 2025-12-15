@@ -67,7 +67,10 @@ const items = [
     title: "Staffs",
     url: "/staffs",
     icon: Users2Icon,
-    list: [{ name: "Manage Accounts Staff", url: "/staffs/accounts" }],
+    list: [
+      { name: "Manage Accounts Staff", url: "/staffs/accounts" },
+      { name: "Add Accounts Staff", url: "/staffs/accounts/add-staff" },
+    ],
   },
   {
     title: "Settings",

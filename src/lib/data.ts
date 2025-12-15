@@ -7,7 +7,8 @@ export type User = {
   user_id: string; // FK to users
   name: string;
   department: string;
-  qualification: string;
+  designation?: string; // Optional field for staff designation
+  qualification?: string; // Made optional
   joining_date: string; // Date in ISO format (YYYY-MM-DD)
   status: UserStatus;
 };
@@ -319,6 +320,131 @@ export const teachersData: User[] = [
     joining_date: "2019-12-15",
     status: "active",
   },
+];
+
+
+export const staffData: User[] = [
+  {
+    id: "1",
+    user_id: "user_101",
+    name: "Abdul Rahman",
+    department: "Administration",
+    designation: "Principal",
+    joining_date: "2018-06-15",
+    status: "active"
+  },
+  {
+    id: "2",
+    user_id: "user_102",
+    name: "Aisha Mohammed",
+    department: "Administration",
+    designation: "Vice Principal",
+    joining_date: "2019-03-22",
+    status: "active"
+  },
+  {
+    id: "3",
+    user_id: "user_103",
+    name: "Omar Farooq",
+    department: "Accounts",
+    designation: "Accountant",
+    joining_date: "2020-01-10",
+    status: "active"
+  },
+  {
+    id: "4",
+    user_id: "user_104",
+    name: "Fatima Ali",
+    department: "Reception",
+    designation: "Receptionist",
+    joining_date: "2021-05-18",
+    status: "active"
+  },
+  {
+    id: "5",
+    user_id: "user_105",
+    name: "Yusuf Khan",
+    department: "Maintenance",
+    designation: "Facility Manager",
+    joining_date: "2019-11-05",
+    status: "active"
+  },
+  {
+    id: "6",
+    user_id: "user_106",
+    name: "Zainab Ahmed",
+    department: "IT",
+    designation: "IT Support",
+    joining_date: "2021-02-28",
+    status: "active"
+  },
+  {
+    id: "7",
+    user_id: "user_107",
+    name: "Khalid Hassan",
+    department: "Security",
+    designation: "Security Head",
+    joining_date: "2020-07-12",
+    status: "inactive"
+  },
+  {
+    id: "8",
+    user_id: "user_108",
+    name: "Maryam Ibrahim",
+    department: "Library",
+    designation: "Librarian",
+    joining_date: "2021-08-15",
+    status: "active"
+  },
+  {
+    id: "9",
+    user_id: "user_109",
+    name: "Ibrahim Malik",
+    department: "Transport",
+    designation: "Transport Incharge",
+    joining_date: "2020-09-22",
+    status: "active"
+  },
+  {
+    id: "10",
+    user_id: "user_110",
+    name: "Amina Yusuf",
+    department: "HR",
+    designation: "HR Manager",
+    joining_date: "2019-04-10",
+    status: "active"
+  }
+];
+
+export const staffColumns: ColumnDef<User>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "user_id",
+    header: "User ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "department",
+    header: "Department",
+  },
+  {
+    accessorKey: "joining_date",
+    header: "Joining Date",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  // {
+  //   accessorKey: "actions",
+  //   header: "",
+  // },
 ];
 
 export const studentsData: Student[] = [

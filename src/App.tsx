@@ -17,6 +17,9 @@ import ViewTeacher from "./features/teachers/view/page"
 import EditTeacher from "./features/teachers/edit/page"
 import EditStudent from "./features/students/edit/page"
 import ViewStudent from "./features/students/view/page"
+import AddStaff from "./features/staff/add/page"
+import EditStaff from "./features/staff/edit/page"
+import ViewStaff from "./features/staff/view/page"
 
 function App() {
   return (
@@ -40,7 +43,12 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/payments-and-fees" element={<Payments />} />
-              <Route path="/staffs" element={<Staffs />} />
+
+              <Route path="/staffs/accounts" element={<Staffs />} />
+              <Route path="/staffs/accounts/add-staff" element={<AddStaff />} />
+              <Route path="/staffs/edit-staffs/:id" element={<EditStaff />} />
+              <Route path="/staffs/view-staffs/:id" element={<ViewStaff />} />
+
               <Route path="/class-rooms" element={<ClassRooms />} />
 
               {/* students */}
