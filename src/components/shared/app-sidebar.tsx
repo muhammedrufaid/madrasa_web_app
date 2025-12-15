@@ -69,7 +69,7 @@ const items = [
   },
   {
     title: "Staffs",
-    url: "/staffs",
+    url: "/staffs/accounts",
     icon: Users2Icon,
     list: [
       { name: "Manage Accounts Staff", url: "/staffs/accounts" },
