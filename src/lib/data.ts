@@ -1,3 +1,4 @@
+import React from 'react';
 import type { ColumnDef } from "@tanstack/react-table";
 
 type UserStatus = "active" | "inactive" | "graduated";
@@ -322,6 +323,48 @@ export const teachersData: User[] = [
   },
 ];
 
+export const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "user_id",
+    header: "User ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "department",
+    header: "Department",
+  },
+  {
+    accessorKey: "qualification",
+    header: "Qualification",
+  },
+  {
+    accessorKey: "joining_date",
+    header: "Joining Date",
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }: { row: { original: User } }) => {
+      const status = row.original.status;
+      return React.createElement('span', {
+        className: `px-2 py-1 rounded-full text-xs ${
+          status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`
+      }, status.charAt(0).toUpperCase() + status.slice(1));
+    },
+  },
+  // {
+  //   accessorKey: "actions",
+  //   header: "",
+  // },
+];
 
 export const staffData: User[] = [
   {
@@ -438,8 +481,16 @@ export const staffColumns: ColumnDef<User>[] = [
     header: "Joining Date",
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }: { row: { original: User } }) => {
+      const status = row.original.status;
+      return React.createElement('span', {
+        className: `px-2 py-1 rounded-full text-xs ${
+          status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`
+      }, status.charAt(0).toUpperCase() + status.slice(1));
+    },
   },
   // {
   //   accessorKey: "actions",
@@ -960,41 +1011,6 @@ export const studentsData: Student[] = [
   }
 ];
 
-export const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
-  {
-    accessorKey: "user_id",
-    header: "User ID",
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "department",
-    header: "Department",
-  },
-  {
-    accessorKey: "qualification",
-    header: "Qualification",
-  },
-  {
-    accessorKey: "joining_date",
-    header: "Joining Date",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  // {
-  //   accessorKey: "actions",
-  //   header: "",
-  // },
-];
-
 export const studentColumns: ColumnDef<Student>[] = [
   {
     accessorKey: "admission_no",
@@ -1023,10 +1039,138 @@ export const studentColumns: ColumnDef<Student>[] = [
     },
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      return row.original.status.charAt(0).toUpperCase() + row.original.status.slice(1);
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }: { row: { original: Student } }) => {
+      const status = row.original.status;
+      return React.createElement('span', {
+        className: `px-2 py-1 rounded-full text-xs ${
+          status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`
+      }, status.charAt(0).toUpperCase() + status.slice(1));
     },
+  },
+];
+
+export type Classroom = {
+  id: string; // UUID PK
+  grade_id: number; // 1-10
+  division_id: 'A' | 'B' | 'C';
+  class_mode_id: 'morning' | 'evening';
+  academic_year_id: string; // FK to academic_years
+  teacher_id: string; // FK to users (homeroom teacher)
+  status: 'active' | 'inactive';
+  created_at: string;
+  updated_at: string;
+};
+
+export const classroomColumns: ColumnDef<Classroom>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
+    accessorKey: 'grade_id',
+    header: 'Grade',
+  },
+  {
+    accessorKey: 'division_id',
+    header: 'Division',
+  },
+  {
+    accessorKey: 'class_mode_id',
+    header: 'Batch',
+    cell: ({ row }: { row: { original: Classroom } }) => {
+      const mode = row.original.class_mode_id;
+      return mode.charAt(0).toUpperCase() + mode.slice(1);
+    },
+  },
+  {
+    accessorKey: 'academic_year_id',
+    header: 'Academic Year',
+  },
+  {
+    accessorKey: 'teacher_id',
+    header: 'Homeroom Teacher',
+    // In a real app, you'd want to join with users table to get teacher name
+    cell: ({ row }) => `Teacher ${row.original.teacher_id.substring(0, 5)}...`,
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }: { row: { original: Classroom } }) => {
+      const status = row.original.status;
+      return React.createElement('span', {
+        className: `px-2 py-1 rounded-full text-xs ${
+          status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`
+      }, status.charAt(0).toUpperCase() + status.slice(1));
+    },
+  },
+];
+
+// // Helper function to generate UUID
+// const generateId = () => `cls-${Math.random().toString(36).substr(2, 9)}`;
+
+// // Current academic year
+// const currentYear = new Date().getFullYear();
+// const nextYear = currentYear + 1;
+// const academicYearId = `${currentYear}-${nextYear.toString().slice(2)}`;
+
+export const classroomData: Classroom[] = [
+  {
+    id: '1',
+    grade_id: 1,
+    division_id: 'A',
+    class_mode_id: 'morning',
+    academic_year_id: '2023-24',
+    teacher_id: 'tchr-001',
+    status: 'active',
+    created_at: '2023-06-01T08:00:00Z',
+    updated_at: '2023-06-01T08:00:00Z',
+  },
+  {
+    id: '2',
+    grade_id: 1,
+    division_id: 'B',
+    class_mode_id: 'morning',
+    academic_year_id: '2023-24',
+    teacher_id: 'tchr-002',
+    status: 'active',
+    created_at: '2023-06-01T08:00:00Z',
+    updated_at: '2023-06-01T08:00:00Z',
+  },
+  {
+    id: '3',
+    grade_id: 2,
+    division_id: 'A',
+    class_mode_id: 'morning',
+    academic_year_id: '2023-24',
+    teacher_id: 'tchr-003',
+    status: 'active',
+    created_at: '2023-06-01T08:00:00Z',
+    updated_at: '2023-06-01T08:00:00Z',
+  },
+  {
+    id: '4',
+    grade_id: 5,
+    division_id: 'A',
+    class_mode_id: 'evening',
+    academic_year_id: '2023-24',
+    teacher_id: 'tchr-004',
+    status: 'active',
+    created_at: '2023-06-01T08:00:00Z',
+    updated_at: '2023-06-01T08:00:00Z',
+  },
+  {
+    id: '5',
+    grade_id: 5,
+    division_id: 'B',
+    class_mode_id: 'evening',
+    academic_year_id: '2023-24',
+    teacher_id: 'tchr-005',
+    status: 'inactive',
+    created_at: '2023-06-01T08:00:00Z',
+    updated_at: '2023-06-01T08:00:00Z',
   },
 ];

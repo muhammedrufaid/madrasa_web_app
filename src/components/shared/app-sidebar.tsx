@@ -37,6 +37,10 @@ const items = [
     title: "Class Rooms",
     url: "/classrooms",
     icon: Calendar,
+    list: [
+      { name: "Manage Class Rooms", url: "/classrooms" },
+      { name: "Add Class Room", url: "/classrooms/add-classroom" },
+    ],
   },
   {
     title: "Payments and Fees",

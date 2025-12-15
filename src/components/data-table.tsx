@@ -38,7 +38,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filterColumn?: string;
-  entityType?: "teacher" | "student" | "staff";
+  entityType?: "teacher" | "student" | "staff" | "classroom";
   onRemove?: (id: string) => Promise<void> | void;
 }
 
@@ -211,7 +211,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                         <DropdownMenuItem
                           onClick={() =>
                             navigate(
-                              `/${entityType}s/view-${entityType}s/${row.original.id}`
+                              `/${entityType === 'classroom' ? 'classrooms' : `${entityType}s`}/view-${entityType}${entityType === 'classroom' ? '' : 's'}/${row.original.id}`
                             )
                           }
                         >
@@ -220,7 +220,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                         <DropdownMenuItem
                           onClick={() =>
                             navigate(
-                              `/${entityType}s/edit-${entityType}s/${row.original.id}`
+                              `/${entityType === 'classroom' ? 'classrooms' : `${entityType}s`}/edit-${entityType}${entityType === 'classroom' ? '' : 's'}/${row.original.id}`
                             )
                           }
                         >
